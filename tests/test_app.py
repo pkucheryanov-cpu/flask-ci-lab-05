@@ -54,3 +54,26 @@ def test_method_not_allowed(client):
     """POST на GET-only endpoint повертає 405."""
     response = client.post("/")
     assert response.status_code == 405
+
+
+def test_greet_success(client):
+    """Успішний запит з ім'ям"""
+    response = client.get("/api/greet/anna")
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data["greeting"] == "Hello, Anna!"
+    assert data["name_length"] == 4
+
+
+def test_greet_capitalize(client):
+    """Ім'я у нижньому регістрі — має бути capitalize"""
+    response = client.get("/api/greet/ivan")
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data["greeting"] == "Hello, Ivan!"
+
+
+def test_greet_missing_name(client):
+    """Запит на /api/greet/ без імені -> 404"""
+    response = client.get("/api/greet/")
+    assert response.status_code == 404

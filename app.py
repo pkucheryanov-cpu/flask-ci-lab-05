@@ -25,5 +25,16 @@ def info():
     )
 
 
+@app.route("/api/greet/<name>")
+def greet(name):
+    capitalized_name = name.capitalize()
+    return jsonify(
+        {
+            "greeting": f"Hello, {capitalized_name}!",
+            "name_length": len(name),
+        }
+    )
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
